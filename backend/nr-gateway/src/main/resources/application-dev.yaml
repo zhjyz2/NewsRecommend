@@ -1,0 +1,3 @@
+newsrec:
+  nacos:
+    server-addr: ${SPRING_CLOUD_NACOS_SERVER-ADDR:localhost:8848}
