@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
@@ -30,8 +31,6 @@ import com.haust.back.entity.Useroperationnew;
 import com.haust.back.mapper.NewMapper;
 import com.haust.back.mapper.UseroperationnewMapper;
 
-import io.swagger.annotations.ApiOperation;
-
 @RestController
 public class NewRecommend {
     // 注入用户操作新闻表的Mapper
@@ -41,7 +40,7 @@ public class NewRecommend {
     @Autowired
     private NewMapper newMapper;
 
-    @ApiOperation("基于协同过滤算法，对用户ID为{ userId }的指定用户推荐{ size }个新闻")
+    @Operation(summary = "基于协同过滤算法，对用户ID为{ userId }的指定用户推荐{ size }个新闻")
     @GetMapping("/recommend/{userId}/{size}")
     public List<New> recommend(@PathVariable Integer userId, @PathVariable Integer size) throws TasteException {
         // 获取所有用户的操作新闻
@@ -98,7 +97,7 @@ public class NewRecommend {
         return new GenericDataModel(fastByIdMap);
     }
 
-    @ApiOperation("获取所有用户的推荐新闻")
+    @Operation(summary = "获取所有用户的推荐新闻")
     @GetMapping("/recommend/hot")
     public List<New> getHotNews() {
         // 获取所有用户的操作新闻，得到热门新闻
