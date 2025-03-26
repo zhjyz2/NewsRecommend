@@ -32,7 +32,7 @@ public class CommentController {
     }
     @Operation(summary = "分页查询指定nid新闻的所有评论，需传入新闻ID，默认每次查询5条数据")
     @GetMapping("/comment/{nid}/{id}/{size}")
-    public IPage getCommentByid(@PathVariable Integer nid,@PathVariable int id,@PathVariable int size)
+    public IPage getCommentByid(@PathVariable(value = "nid") Integer nid,@PathVariable(value = "id") int id,@PathVariable(value = "size") int size)
     {
         Page<Comment> page = new Page<>(id, size);
         IPage iPage = commentMapper.selectPage(page, new QueryWrapper<Comment>().eq("new_id", nid));
@@ -40,28 +40,28 @@ public class CommentController {
     }
     @Operation(summary = "查询指定nid新闻的点赞数量，需传入新闻ID")
     @GetMapping("/comment/like/{nid}")
-    public Long getlike(@PathVariable Integer nid)
+    public Long getlike(@PathVariable(value = "nid") Integer nid)
     {
         Long like = commentMapper.selectCount(new QueryWrapper<Comment>().eq("new_id", nid));
         return like;
     }
     @Operation(summary = "查询指定nid新闻的点踩数量，需传入新闻ID")
     @GetMapping("/comment/gdislike/{nid}")
-    public Long getdislike(@PathVariable Integer nid)
+    public Long getdislike(@PathVariable(value = "nid") Integer nid)
     {
         Long like = commentMapper.selectCount(new QueryWrapper<Comment>().eq("new_id", nid));
         return like;
     }
     @Operation(summary = "增加指定nid新闻的点赞数量，需传入新闻ID")
     @GetMapping("/comment/plike/{nid}")
-    public Long postlike(@PathVariable Integer nid)
+    public Long postlike(@PathVariable(value = "nid") Integer nid)
     {
         Long like = commentMapper.selectCount(new QueryWrapper<Comment>().eq("new_id", nid));
         return like;
     }
     @Operation(summary = "增加指定nid新闻的点踩数量，需传入新闻ID")
     @GetMapping("/comment/pdislike/{nid}")
-    public Long postdislike(@PathVariable Integer nid)
+    public Long postdislike(@PathVariable(value = "nid") Integer nid)
     {
         Long like = commentMapper.selectCount(new QueryWrapper<Comment>().eq("new_id", nid));
         return like;

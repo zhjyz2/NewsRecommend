@@ -18,20 +18,20 @@ public class NewstatusController {
 
     @Operation(summary = "查询指定新闻内容的行为数据，需传入新闻ID")
     @GetMapping("/newstatus/status/{nid}")
-    public Newstatus getstatusbynid(@PathVariable Integer nid) {
+    public Newstatus getstatusbynid(@PathVariable(value = "nid") Integer nid) {
         return newstatusMapper.selectOne(new QueryWrapper<Newstatus>().eq("new_id", nid));
     }
 
     @Operation(summary = "查询指定nid新闻的点赞数量，需传入新闻ID")
     @GetMapping("/newstatus/like/{nid}")
-    public Long getlike(@PathVariable Integer nid) {
+    public Long getlike(@PathVariable(value = "nid") Integer nid) {
         Long like = newstatusMapper.selectCount(new QueryWrapper<Newstatus>().eq("new_id", nid));
         return like;
     }
 
     @Operation(summary = "查询指定nid新闻的点踩数量，需传入新闻ID")
     @GetMapping("/newstatus/gdislike/{nid}")
-    public Long getdislike(@PathVariable Integer nid) {
+    public Long getdislike(@PathVariable(value = "nid") Integer nid) {
         Long like = newstatusMapper.selectCount(new QueryWrapper<Newstatus>().eq("new_id", nid));
         return like;
     }

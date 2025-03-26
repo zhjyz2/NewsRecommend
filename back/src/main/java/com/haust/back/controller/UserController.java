@@ -24,7 +24,7 @@ public class UserController {
 
     @Operation(summary = "对所有的用户信息进行分页查询，默认每次查询5条数据")
     @GetMapping("/user/{id}/{size}")
-    public IPage getUserPage(@PathVariable int id, @PathVariable int size) {
+    public IPage getUserPage(@PathVariable(value = "id") int id, @PathVariable(value = "size") int size) {
         Page<User> page = new Page<>(id, size);
         IPage iPage = userMapper.selectPage(page, null);
         return iPage;
@@ -32,7 +32,7 @@ public class UserController {
 
     @Operation(summary = "查询指定用户的详细内容，需传入用户id")
     @GetMapping("/user/{id}")
-    public User getUserDetailById(@PathVariable Integer id) {
+    public User getUserDetailById(@PathVariable(value = "id") Integer id) {
         return userMapper.selectById(id);
     }
 
@@ -57,7 +57,7 @@ public class UserController {
 
     @Operation(summary = "删除一条用户信息，需传入用户id进行匹配")
     @DeleteMapping("/user/{id}")
-    public int deleteById(@PathVariable Integer id) {
+    public int deleteById(@PathVariable(value = "id") Integer id) {
         return userMapper.deleteById(id);
     }
 

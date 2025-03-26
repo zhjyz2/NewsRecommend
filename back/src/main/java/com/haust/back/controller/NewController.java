@@ -15,7 +15,7 @@ public class NewController {
     private NewMapper newMapper;
     @Operation(summary = "对所有的新闻进行分页查询，默认每次查询5条数据")
     @GetMapping("/news/findbypage/{id}/{size}")
-    public IPage getNewsPage(@PathVariable int id,@PathVariable int size)
+    public IPage getNewsPage(@PathVariable(value = "id") int id,@PathVariable(value = "size") int size)
     {
         Page<New> page = new Page<>(id, size);
         IPage iPage = newMapper.selectPage(page, null);
@@ -23,7 +23,7 @@ public class NewController {
     }
     @Operation(summary = "对不同分类的新闻进行分页查询，需传入新闻分类id，默认每次查询5条数据")
     @GetMapping("/news/{cid}/{id}/{size}")
-    public IPage getNewsPageByCid(@PathVariable int cid,@PathVariable int id,@PathVariable int size)
+    public IPage getNewsPageByCid(@PathVariable(value = "cid") int cid,@PathVariable(value = "id") int id,@PathVariable(value = "size") int size)
     {
         Page<New> page = new Page<>(id, size);
         IPage iPage = newMapper.selectPage(page, new QueryWrapper<New>().eq("new_cid", cid));
@@ -31,7 +31,7 @@ public class NewController {
     }
     @Operation(summary = "对不同日期的新闻进行分页查询，需传入新闻日期，默认每次查询5条数据")
     @GetMapping("/news/pagebydate/{date}/{id}/{size}")
-    public IPage getNewsPageByDate(@PathVariable String date,@PathVariable int id,@PathVariable int size)
+    public IPage getNewsPageByDate(@PathVariable(value = "date") String date,@PathVariable(value = "id") int id,@PathVariable(value = "size") int size)
     {
         Page<New> page = new Page<>(id, size);
         IPage iPage = newMapper.selectPage(page, new QueryWrapper<New>().eq("new_date", date));
@@ -39,7 +39,7 @@ public class NewController {
     }
     @Operation(summary = "查询指定新闻的详细内容，需传入新闻id")
     @GetMapping("/newdetail/{id}")
-    public New getNewsDetailById(@PathVariable int id)
+    public New getNewsDetailById(@PathVariable(value = "id") int id)
     {
         New news = newMapper.selectById(id);
         return news;
@@ -62,7 +62,7 @@ public class NewController {
 
     @Operation(summary = "删除一条新闻信息，需传入新闻id进行匹配")
     @DeleteMapping("/new/{id}")
-    public int  deleteNewById(@PathVariable Integer id)
+    public int  deleteNewById(@PathVariable(value = "id") Integer id)
     {
         return newMapper.deleteById(id);
     }

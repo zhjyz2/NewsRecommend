@@ -42,7 +42,7 @@ public class NewRecommend {
 
     @Operation(summary = "基于协同过滤算法，对用户ID为{ userId }的指定用户推荐{ size }个新闻")
     @GetMapping("/recommend/{userId}/{size}")
-    public List<New> recommend(@PathVariable Integer userId, @PathVariable Integer size) throws TasteException {
+    public List<New> recommend(@PathVariable(value = "userId") Integer userId, @PathVariable(value = "size") Integer size) throws TasteException {
         // 获取所有用户的操作新闻
         List<Useroperationnew> userList = useroperationnewMapper.getAllUserPreference();
         // 创建数据模型
