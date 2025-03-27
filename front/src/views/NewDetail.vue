@@ -1,5 +1,5 @@
 <script>
-import Sinalnew from '~/components/singalnew.vue'
+import singalnew from '~/components/singalnew.vue'
 import Comment from '~/components/Comment.vue';
 import replycomment from '~/components/Reply.vue';
 import newstatus from '~/components/newstatus.vue';
@@ -52,7 +52,7 @@ import newstatus from '~/components/newstatus.vue';
           </el-col>
           <el-col :span="16" class=" min-h-screen">
             <div>
-              <Sinalnew/>
+              <singalnew/>
             </div>
             <div class="pt-2">
               <newstatus/>
