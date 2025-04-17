@@ -1,3 +1,4 @@
+import os
 import openpyxl
 import requests
 import pymysql
@@ -9,14 +10,14 @@ headers = {
 }
 
 
-# 组合日期链接
+# 使用中国新闻网作为新闻源，首先组合日期链接
 def cnew_url():
-    f = open(r'C:/Code/NewsRecommend/spider/cnew_url.txt', 'w', encoding='utf8')
-    for i in range(6, 11):
+    f = open(r'./cnew_url.txt', 'w', encoding='utf8')
+    for i in range(1, 11):
         if i < 10:
-            url = 'https://www.chinanews.com.cn/scroll-news/2023/040' + str(i) + '/news.shtml'
+            url = 'https://www.chinanews.com.cn/scroll-news/2025/040' + str(i) + '/news.shtml'
         else:
-            url = 'https://www.chinanews.com.cn/scroll-news/2023/04' + str(i) + '/news.shtml'
+            url = 'https://www.chinanews.com.cn/scroll-news/2025/04' + str(i) + '/news.shtml'
         f.write(url + '\n')
     f.close()
 
@@ -29,7 +30,7 @@ def saveToDB(new_cid, new_category, new_title, new_cnt, new_url, new_date):
                           host='localhost',
                           database='News')
     cursor = cur.cursor()  # 游标
-    # print(new_cid+new_category+new_title+new_cnt+new_url+new_date)
+    # print(f"{new_cid}-{new_category}-{new_title}-{new_cnt}-{new_url}-{new_date}")
     sql = f"insert into news (new_cid,new_category,new_title,new_cnt,new_url,new_date) values ('{new_cid}','{new_category}','{new_title}','{new_cnt}','{new_url}','{new_date}')"
     # sql插入语句
     # 操作捕捉异常，如果没有异常则继续执行，如若有则抛出异常
@@ -42,10 +43,14 @@ def saveToDB(new_cid, new_category, new_title, new_cnt, new_url, new_date):
 
 
 def cnew_data():
-    f = open(r'C:/Code/NewsRecommend/spider/cnew_url.txt', encoding='utf8')  # 读取上面已经组合好的链接
-    l = openpyxl.load_workbook(r'C:/Code/NewsRecommend/spider/cnew_data.xlsx')
+    f = open(r'./cnew_url.txt', encoding='utf8')  # 读取上面已经组合好的链接
+    
+    # 检查文件是否存在，如果不存在则创建
+    if not os.path.exists(r'./cnew_data.xlsx'):
+        openpyxl.Workbook().save(r'./cnew_data.xlsx')
+    l = openpyxl.load_workbook(r'./cnew_data.xlsx')
     sheet = l.active
-    m = open(r'C:/Code/NewsRecommend/spider/cnew_url1.txt', 'a', encoding='utf8')  # 保存报错的链接
+    m = open(r'./cnew_url1.txt', 'a', encoding='utf8')  # 保存报错的链接
     x = 1  # 从Excel的第几行开始写入
     for i in f:
         lj1 = []
@@ -62,7 +67,7 @@ def cnew_data():
             if j[:5] == '//www':
                 lj1.append('https:' + j)
             else:
-                lj1.append('https://www.chinanews.com.cn/' + j)
+                lj1.append('https://www.chinanews.com.cn' + j)
         n = 0
         for k in tqdm(lj1):
             try:
@@ -87,13 +92,11 @@ def cnew_data():
                 data[2][0] = data[2][0].strip()
                 # print(data)
                 list = data[3][0].split('/')
-                if data[2][0] != "":
+                if data[2][1].strip() != '':
                     if 10 >= catorgy[data[0][0]] >= 1:
-
-                        saveToDB(catorgy[data[0][0]], data[0][0], data[1][0], data[2][0], data[3][0],
-                                 "2023-" + list[-2])
+                        saveToDB(catorgy[data[0][0]], data[0][0], data[1][0], data[2][1], data[3][0],"2025-" + list[-2])
                     else:
-                        saveToDB(0, data[0][0], data[1][0], data[2][0], data[3][0], "2023-" + list[-2])
+                        saveToDB(0, data[0][0], data[1][0], data[2][1], data[3][0], "2025-" + list[-2])
                 for y in range(len(data)):
                     sheet.cell(x, y + 1).value = '\n'.join(data[y])
                 x += 1
@@ -101,7 +104,7 @@ def cnew_data():
             except Exception as arr:
                 m.write(lj1[n])
                 continue
-        l.save(r'C:/Code/NewsRecommend/spider/cnew_data.xlsx')
+        l.save(r'./cnew_data.xlsx')
     f.close()
     m.close()
 
